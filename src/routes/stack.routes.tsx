@@ -3,6 +3,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { TelaInicial } from '../screens/TelaInicial/TelaInicial';
 import { TelaCadastro } from '../screens/TelaCadastro/Tele_Cadastro';
 import {Editar} from '../screens/Editar/Editar'
+import {TelaBuscar} from '../screens/Editar/Buscar/Buscar'
 
 const Stack = createStackNavigator();
 
@@ -20,6 +21,10 @@ export function StackRoutes() {
       <Stack.Screen
       name="Editar Cadastro"
       component={Editar}
+      />
+      <Stack.Screen
+      name='Tela Buscar'
+      component={TelaBuscar}
       />
     </Stack.Navigator>
   );

@@ -1,9 +1,9 @@
 import React from 'react';
 import { View, Image, Text, TextInput, ScrollView, Alert, TouchableOpacity } from 'react-native';
-import IcoPessoa from '../../../assets/image/icoPessoa.png';
+import IcoPessoa from '../../../../assets/image/icoPessoa.png';
 import { styles } from './BuscarStyle';
 
-export function TelaCadastro() {
+export function TelaBuscar() {
   const handleCadastro = () => {
     Alert.alert(
       'Editar',
@@ -40,7 +40,7 @@ export function TelaCadastro() {
         placeholder="Cidade"
       />
       <TouchableOpacity style={styles.botao} onPress={handleCadastro}>
-        <Text style={styles.textoBotao}>Cadastrar</Text>
+        <Text style={styles.textoBotao}>Editar</Text>
       </TouchableOpacity>
     </ScrollView>
   );
