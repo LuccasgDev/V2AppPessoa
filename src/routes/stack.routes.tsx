@@ -4,6 +4,8 @@ import { TelaInicial } from '../screens/TelaInicial/TelaInicial';
 import { TelaCadastro } from '../screens/TelaCadastro/Tele_Cadastro';
 import {Editar} from '../screens/Editar/Editar'
 import {TelaBuscar} from '../screens/Editar/Buscar/Buscar'
+import {Deletar} from '../screens/Deletar/Deletar'
+import {ListaPessoas} from '../screens/buscaTodos/BuscaTodos'
 
 const Stack = createStackNavigator();
 
@@ -25,6 +27,14 @@ export function StackRoutes() {
       <Stack.Screen
       name='Tela Buscar'
       component={TelaBuscar}
+      />
+      <Stack.Screen
+      name='Tela Deletar'
+      component={Deletar}
+      />
+      <Stack.Screen
+      name='Tela ListarTodos'
+      component={ListaPessoas}
       />
     </Stack.Navigator>
   );

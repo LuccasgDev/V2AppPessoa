@@ -16,6 +16,15 @@ export function Botoes() {
     navigation.navigate('Editar Cadastro')
   }
 
+  function navToDeletar(){
+    navigation.navigate('Tela Deletar')
+  }
+
+  function navToListaPessoas(){
+    navigation.navigate('Tela ListarTodos')
+
+  }
+
   return (
     <View>
       <Pressable onPress={navToCadastro} style={styles.butao_Cadastra}>
@@ -24,10 +33,10 @@ export function Botoes() {
       <Pressable onPress={navToEditar} style={styles.butao_Editar}>
         <Text style={{ color: "black", fontSize: 20 }}> Editar Pessoa </Text>
       </Pressable>
-      <Pressable onPress={() => console.log("Deletar Pessoa")} style={styles.butao_Deletar}>
+      <Pressable onPress={navToDeletar} style={styles.butao_Deletar}>
         <Text style={{ color: "black", fontSize: 20 }}> Deletar Pessoa </Text>
       </Pressable>
-      <Pressable onPress={() => console.log("Buscar todas as Pessoas")} style={styles.butao_Buscar}>
+      <Pressable onPress={navToListaPessoas} style={styles.butao_Buscar}>
         <Text style={{ color: "black", fontSize: 20 }}> Buscar todas as Pessoas </Text>
       </Pressable>
     </View>

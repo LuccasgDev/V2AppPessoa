@@ -6,6 +6,8 @@ export type RootStackParamList = {
   'Tela Cadastro': undefined;
   'Editar Cadastro': undefined;
   'Tela Buscar': undefined; // Adiciona a tela de buscar
+  'Tela Deletar':undefined;
+  'Tela Listar Todos':undefined
 };
 
 export type NavigationProps = StackNavigationProp<RootStackParamList>;
