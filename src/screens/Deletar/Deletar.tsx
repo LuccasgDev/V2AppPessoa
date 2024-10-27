@@ -1,26 +1,31 @@
-import React from 'react';
-import { View, Image, Text, TextInput, TouchableOpacity, Alert } from 'react-native';
-import IcoPessoa from '../../../assets/image/icoPessoa.png';
+// src/screens/Deletar.tsx
+import React, { useState } from 'react';
+import { View, TextInput, ScrollView, Alert, TouchableOpacity, Text } from 'react-native';
+import { deletePessoa } from '../../api/apiService';
 import { styles } from './DeletarStyle';
 
 export function Deletar() {
-  const handleDeletar = () => {
-    Alert.alert(
-      'Deletar',
-      'Deletado com sucesso!'
-    );
+  const [id, setId] = useState('');
+
+  const handleDeletar = async () => {
+    try {
+      await deletePessoa(id);
+      Alert.alert('Sucesso', 'Pessoa deletada com sucesso!');
+    } catch (error) {
+      Alert.alert('Erro', 'Erro ao deletar pessoa.');
+    }
   };
 
   return (
     <View style={styles.container}>
-      <Image source={IcoPessoa} style={styles.image} />
       <TextInput 
         style={styles.input} 
-        keyboardType='numeric' 
         placeholder="ID" 
+        value={id} 
+        onChangeText={setId} 
       />
-      <TouchableOpacity onPress={handleDeletar}>
-        <Text style={styles.botao}>Deletar</Text>
+      <TouchableOpacity style={styles.botao} onPress={handleDeletar}>
+        <Text style={styles.textoBotao}>Deletar</Text>
       </TouchableOpacity>
     </View>
   );

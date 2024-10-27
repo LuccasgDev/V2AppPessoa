@@ -1,43 +1,51 @@
-import React from 'react';
-import { View, Image, Text, TextInput, ScrollView, Alert, TouchableOpacity } from 'react-native';
-import IcoPessoa from '../../../assets/image/icoPessoa.png';
+// src/screens/Tele_Cadastro.tsx
+import React, { useState } from 'react';
+import { View, TextInput, ScrollView, Alert, TouchableOpacity, Text } from 'react-native';
+import { createPessoa } from '../../api/apiService';
 import { styles } from './Tele_CadastroStyle';
 
+
 export function TelaCadastro() {
-  const handleCadastro = () => {
-    Alert.alert(
-      'Cadastro',
-      'Cadastro realizado com sucesso!',
-    );
+  const [nome, setNome] = useState('');
+  const [dataNascimento, setDataNascimento] = useState('');
+  const [uf, setUf] = useState('');
+  const [cidade, setCidade] = useState('');
+
+  const handleCadastro = async () => {
+    const data = { nome, dataNascimento, uf, cidade };
+    try {
+      await createPessoa(data);
+      Alert.alert('Cadastro', 'Cadastro realizado com sucesso!');
+    } catch (error) {
+      Alert.alert('Erro', 'Erro ao realizar cadastro.');
+    }
   };
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      <Image source={IcoPessoa} style={styles.image} />
-      <Text style={styles.titulo}> Nome </Text>
       <TextInput 
         style={styles.input} 
-        placeholder="Digite seu nome"
-        editable 
-        multiline={false} 
-        maxLength={40} 
+        placeholder="Nome" 
+        value={nome} 
+        onChangeText={setNome} 
       />
-      <Text style={styles.titulo}> Data de Nascimento </Text>
       <TextInput 
         style={styles.input} 
-        placeholder="DD/MM/AAAA"
-        keyboardType="numeric" 
+        placeholder="Data de Nascimento" 
+        value={dataNascimento} 
+        onChangeText={setDataNascimento} 
       />
-      <Text style={styles.titulo}> UF </Text>
       <TextInput 
         style={styles.input} 
-        placeholder="UF"
-        maxLength={2} 
+        placeholder="UF" 
+        value={uf} 
+        onChangeText={setUf} 
       />
-      <Text style={styles.titulo}> Cidade </Text>
       <TextInput 
         style={styles.input} 
-        placeholder="Cidade"
+        placeholder="Cidade" 
+        value={cidade} 
+        onChangeText={setCidade} 
       />
       <TouchableOpacity style={styles.botao} onPress={handleCadastro}>
         <Text style={styles.textoBotao}>Cadastrar</Text>

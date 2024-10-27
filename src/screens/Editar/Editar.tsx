@@ -1,28 +1,38 @@
-import React from 'react';
-import { View, Image, Text, TextInput, TouchableOpacity } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import { NavigationProps } from '../../navigation/types'; // Ajuste o caminho se necessário
-import { BotaoEditar } from '../../components/Botoes/BotaoEditar'; // Ajuste o caminho se necessário
-import IcoPessoa from '../../../assets/image/icoPessoa.png';
+// src/screens/Editar.tsx
+import React, { useState } from 'react';
+import { View, TextInput, ScrollView, Alert, TouchableOpacity, Text } from 'react-native';
+import { updatePessoa } from '../../api/apiService';
 import { styles } from './EditarStyle';
 
 export function Editar() {
-  const navigation = useNavigation<NavigationProps>(); // Chamando useNavigation dentro de um componente
+  const [id, setId] = useState('');
+  const [nome, setNome] = useState('');
 
-  const navToBuscar = () => {
-    navigation.navigate('Tela Buscar'); // Navegar para a Tela de Buscar
+  const handleEdit = async () => {
+    try {
+      await updatePessoa(id, { nome });
+      Alert.alert('Sucesso', 'Pessoa editada com sucesso!');
+    } catch (error) {
+      Alert.alert('Erro', 'Erro ao editar pessoa.');
+    }
   };
 
   return (
     <View style={styles.container}>
-      <Image source={IcoPessoa} style={styles.image} />
       <TextInput 
-        style={styles.titulo} 
-        keyboardType='numeric' 
+        style={styles.input} 
         placeholder="ID" 
+        value={id} 
+        onChangeText={setId} 
       />
-      <TouchableOpacity onPress={navToBuscar}>
-        <BotaoEditar />
+      <TextInput 
+        style={styles.input} 
+        placeholder="Novo Nome" 
+        value={nome} 
+        onChangeText={setNome} 
+      />
+      <TouchableOpacity style={styles.botao} onPress={handleEdit}>
+        <Text style={styles.textoBotao}>Editar</Text>
       </TouchableOpacity>
     </View>
   );

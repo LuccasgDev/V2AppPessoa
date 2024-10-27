@@ -1,43 +1,31 @@
-import React, { useState } from 'react';
-import { View, Text, FlatList, StyleSheet, Button, TextInput } from 'react-native';
-import styles from './BuscaTodosStyle'; // Certifique-se de que o caminho está correto
-
-const pessoas = [
-  {
-    id: '1',
-    nome: 'Lucas Gabriel',
-    dataNascimento: '22/06/2003',
-    uf: 'CE',
-    cidade: 'Fortaleza',
-  },
-  {
-    id: '2',
-    nome: 'Luis Felipe',
-    dataNascimento: '01/09/2010',
-    uf: 'CE',
-    cidade: 'Iguatu',
-  },
-];
+// src/screens/BuscaTodos.tsx
+import React, { useEffect, useState } from 'react';
+import { View, Text, FlatList, TextInput } from 'react-native';
+import styles from './BuscaTodosStyle';
+import { fetchPessoas } from '../../api/apiService';
+import { Pessoa } from '../../models/Pessoa'; // Ajuste o caminho conforme necessário
 
 export function ListaPessoas() {
-  // Definindo o estado 'filtro' como string ou null
-  const [filtro, setFiltro] = useState<string | null>(null);
+  const [pessoas, setPessoas] = useState<Pessoa[]>([]); // Define o tipo do estado
+  const [filtro, setFiltro] = useState('');
   const [busca, setBusca] = useState('');
 
-  const filtrarPorFortaleza = () => {
-    setFiltro('Fortaleza');
-  };
+  useEffect(() => {
+    const loadPessoas = async () => {
+      try {
+        const data = await fetchPessoas();
+        setPessoas(data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
 
-  const limparFiltro = () => {
-    setFiltro(null);
-    setBusca('');
-  };
+    loadPessoas();
+  }, []);
 
-  const pessoasFiltradas = pessoas.filter(pessoa => {
-    const matchCidade = filtro ? pessoa.cidade === filtro : true;
-    const matchNome = pessoa.nome.toLowerCase().includes(busca.toLowerCase());
-    return matchCidade && matchNome;
-  });
+  const pessoasFiltradas = pessoas.filter(pessoa => 
+    pessoa.nome.toLowerCase().includes(busca.toLowerCase())
+  );
 
   return (
     <View style={styles.container}>
@@ -47,8 +35,6 @@ export function ListaPessoas() {
         value={busca}
         onChangeText={setBusca}
       />
-      <Button title="Filtrar por Fortaleza" onPress={filtrarPorFortaleza} />
-      <Button title="Limpar Filtro" onPress={limparFiltro} />
       <FlatList
         data={pessoasFiltradas}
         keyExtractor={(item) => item.id}
