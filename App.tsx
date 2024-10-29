@@ -20,7 +20,7 @@ export default function App() {
 
   return (
     <NavigationContainer>
-      <StackRoutes /> {/* Mantém as rotas */}
+      <StackRoutes />
       <StatusBar style="auto" />
     </NavigationContainer>
   );
