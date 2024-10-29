@@ -1,9 +1,14 @@
-// src/screens/Tele_Cadastro.tsx
 import React, { useState } from 'react';
-import { View, TextInput, ScrollView, Alert, TouchableOpacity, Text } from 'react-native';
-import { createPessoa } from '../../api/apiService';
+import { 
+  View, 
+  TextInput, 
+  Alert, 
+  TouchableOpacity, 
+  Text 
+} from 'react-native';
+import { createPessoa, Pessoa2 } from '../../api/apiService';
 import { styles } from './Tele_CadastroStyle';
-
+import  {Pessoa}  from '../../api/apiService';
 
 export function TelaCadastro() {
   const [nome, setNome] = useState('');
@@ -12,17 +17,30 @@ export function TelaCadastro() {
   const [cidade, setCidade] = useState('');
 
   const handleCadastro = async () => {
-    const data = { nome, dataNascimento, uf, cidade };
+    if (!nome || !dataNascimento || !uf || !cidade) {
+      Alert.alert('Erro', 'Preencha todos os campos!');
+      return;
+    }
+
+    const pessoa: Pessoa2 = {
+      nome, 
+      dataNascimento, 
+      uf, 
+      cidade 
+    };
+
     try {
-      await createPessoa(data);
+      const response = await createPessoa(pessoa);
+      console.log(response);
       Alert.alert('Cadastro', 'Cadastro realizado com sucesso!');
     } catch (error) {
+      console.error(error);
       Alert.alert('Erro', 'Erro ao realizar cadastro.');
     }
   };
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
+    <View style={styles.container}>
       <TextInput 
         style={styles.input} 
         placeholder="Nome" 
@@ -47,9 +65,12 @@ export function TelaCadastro() {
         value={cidade} 
         onChangeText={setCidade} 
       />
-      <TouchableOpacity style={styles.botao} onPress={handleCadastro}>
+      <TouchableOpacity 
+        style={styles.botao} 
+        onPress={handleCadastro}
+      >
         <Text style={styles.textoBotao}>Cadastrar</Text>
       </TouchableOpacity>
-    </ScrollView>
+    </View>
   );
 }

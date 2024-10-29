@@ -1,44 +1,86 @@
-// src/api/api.ts
 import axios from 'axios';
+import { API_BASE_URL } from '../constants/links';
 
-const API_BASE_URL = 'https://localhost:7281/api'; // Ajuste o URL conforme necessário
+export interface Pessoa {
+  id: number;
+  nome: string;
+  dataNascimento: string;
+  uf: string;
+  cidade: string;
+}
 
+const handleApiError = (error: any) => {
+  console.error('Erro na API:', error.message);
+  if (error.response) {
+    console.error('Status:', error.response.status);
+    console.error('Dados:', error.response.data);
+  } else {
+    console.error('Erro:', error);
+  }
+};
+
+// Função para buscar uma pessoa pelo ID
+export const fetchPessoaById = async (id: number) => {
+  try {
+    const response = await axios.get(`${API_BASE_URL}/pessoa/${id}`);
+    if (response.status !== 200) {
+      throw new Error(`Erro ao buscar pessoa: ${response.status}`);
+    }
+    return response.data;
+  } catch (error: any) {
+    handleApiError(error);
+    return;
+  }
+};
+
+// Função para buscar todas as pessoas
 export const fetchPessoas = async () => {
   try {
-    const response = await axios.get(`${API_BASE_URL}/pessoas`); // Ajuste o endpoint
+    const response = await axios.get(`${API_BASE_URL}/pessoa`);
+    if (response.status !== 200) {
+      throw new Error(`Erro ao buscar pessoas: ${response.status}`);
+    }
     return response.data;
-  } catch (error) {
-    console.error('Erro ao buscar pessoas:', error);
-    throw error;
+  } catch (error: any) {
+    handleApiError(error);
+    return;
   }
 };
 
-export const createPessoa = async (data: any) => {
+// Função para criar uma nova pessoa
+export const createPessoa = async (data: Pessoa) => {
   try {
-    const response = await axios.post(`${API_BASE_URL}/pessoas`, data);
+    const response = await axios.post(`${API_BASE_URL}/pessoa`, data);
+    if (response.status !== 201) { // Verifique se a criação foi bem-sucedida
+      throw new Error(`Erro ao criar pessoa: ${response.status}`);
+    }
     return response.data;
-  } catch (error) {
-    console.error('Erro ao criar pessoa:', error);
-    throw error;
+  } catch (error: any) {
+    handleApiError(error);
   }
 };
 
-export const updatePessoa = async (id: string, data: any) => {
+// Função para atualizar uma pessoa
+export const updatePessoa = async (id: number, data: Pessoa) => {
   try {
-    const response = await axios.put(`${API_BASE_URL}/pessoas/${id}`, data);
+    const response = await axios.put(`${API_BASE_URL}/pessoa/${id}`, data);
+    if (response.status !== 200) {
+      throw new Error(`Erro ao atualizar pessoa: ${response.status}`);
+    }
     return response.data;
-  } catch (error) {
-    console.error('Erro ao atualizar pessoa:', error);
-    throw error;
+  } catch (error: any) {
+    handleApiError(error);
   }
 };
 
-export const deletePessoa = async (id: string) => {
+// Função para deletar uma pessoa pelo ID
+export const deletePessoa = async (id: number) => {
   try {
-    const response = await axios.delete(`${API_BASE_URL}/pessoas/${id}`);
-    return response.data;
-  } catch (error) {
-    console.error('Erro ao deletar pessoa:', error);
-    throw error;
+    const response = await axios.delete(`${API_BASE_URL}/pessoa/${id}`);
+    if (response.status !== 204) { // Verifique se a deleção foi bem-sucedida
+      throw new Error(`Erro ao deletar pessoa: ${response.status}`);
+    }
+  } catch (error: any) {
+    handleApiError(error);
   }
 };

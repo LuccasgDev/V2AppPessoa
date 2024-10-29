@@ -1,47 +1,56 @@
-import React from 'react';
-import { View, Image, Text, TextInput, ScrollView, Alert, TouchableOpacity } from 'react-native';
-import IcoPessoa from '../../../../assets/image/icoPessoa.png';
+import React, { useState } from 'react';
+import { View, TextInput, Alert, TouchableOpacity, Text, ActivityIndicator } from 'react-native';
+import { fetchPessoaById } from '../../../api/apiService';
 import { styles } from './BuscarStyle';
+import { StackScreenProps } from '@react-navigation/stack';
+import { RootStackParamList } from '../../../navigation/types';
 
-export function TelaBuscar() {
-  const handleCadastro = () => {
-    Alert.alert(
-      'Editar',
-      'Editado com sucesso!',
-    );
+type BuscarProps = StackScreenProps<RootStackParamList, 'Tela Buscar'>;
+
+export function Buscar({ navigation }: BuscarProps) {
+  const [id, setId] = useState('');
+  const [loading, setLoading] = useState(false); // Adicionando estado de loading
+
+  const handleBuscar = async () => {
+    const idNumber = Number(id);
+    if (isNaN(idNumber)) {
+      Alert.alert('Erro', 'ID deve ser um número válido.');
+      return;
+    }
+
+    setLoading(true); // Inicia o loading
+
+    try {
+      const pessoa = await fetchPessoaById(idNumber);
+      if (pessoa) {
+        navigation.navigate('Editar Cadastro', { id: pessoa.id });
+        setId(''); // Limpa o campo de input após a busca
+      } else {
+        Alert.alert('Erro', 'Pessoa não encontrada.');
+      }
+    } catch (error) {
+      Alert.alert('Erro', 'Erro ao buscar pessoa. Verifique sua conexão e tente novamente.');
+    } finally {
+      setLoading(false); // Finaliza o loading
+    }
   };
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
-      <Image source={IcoPessoa} style={styles.image} />
-      <Text style={styles.titulo}> Nome </Text>
+    <View style={styles.container}>
       <TextInput 
         style={styles.input} 
-        placeholder="Digite seu nome"
-        editable 
-        multiline={false} 
-        maxLength={40} 
+        placeholder="ID" 
+        value={id} 
+        onChangeText={setId} 
+        keyboardType="numeric" // Define o teclado para número
       />
-      <Text style={styles.titulo}> Data de Nascimento </Text>
-      <TextInput 
-        style={styles.input} 
-        placeholder="DD/MM/AAAA"
-        keyboardType="numeric" 
-      />
-      <Text style={styles.titulo}> UF </Text>
-      <TextInput 
-        style={styles.input} 
-        placeholder="UF"
-        maxLength={2} 
-      />
-      <Text style={styles.titulo}> Cidade </Text>
-      <TextInput 
-        style={styles.input} 
-        placeholder="Cidade"
-      />
-      <TouchableOpacity style={styles.botao} onPress={handleCadastro}>
-        <Text style={styles.textoBotao}>Editar</Text>
+      <TouchableOpacity style={styles.botao} onPress={handleBuscar} disabled={loading}>
+        {loading ? (
+          <ActivityIndicator color="#fff" /> // Mostra um indicador de carregamento
+        ) : (
+          <Text style={styles.textoBotao}>Buscar</Text>
+        )}
       </TouchableOpacity>
-    </ScrollView>
+    </View>
   );
 }
