@@ -8,8 +8,12 @@ export default function App() {
   useEffect(() => {
     const initializeApp = async () => {
       try {
-        await fetchPessoas(); // Tenta buscar pessoas para testar a conexão
-        console.log('Aplicativo inicializado com sucesso! Conexão com a API estabelecida.');
+        const pessoas = await fetchPessoas(); // Tenta buscar pessoas para testar a conexão
+        if (pessoas) {
+          console.log('Aplicativo inicializado com sucesso! Conexão com a API estabelecida.', pessoas);
+        } else {
+          console.error('Nenhuma pessoa encontrada ou erro na API.');
+        }
       } catch (error) {
         console.error('Erro ao inicializar o aplicativo:', error);
       }

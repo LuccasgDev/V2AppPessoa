@@ -29,7 +29,7 @@ export const fetchPessoaById = async (id: number) => {
     return response.data;
   } catch (error: any) {
     handleApiError(error);
-    return;
+    return null;
   }
 };
 
@@ -43,7 +43,7 @@ export const fetchPessoas = async () => {
     return response.data;
   } catch (error: any) {
     handleApiError(error);
-    return;
+    return null;
   }
 };
 
@@ -51,12 +51,13 @@ export const fetchPessoas = async () => {
 export const createPessoa = async (data: Pessoa) => {
   try {
     const response = await axios.post(`${API_BASE_URL}/pessoa`, data);
-    if (response.status !== 201) { // Verifique se a criação foi bem-sucedida
+    if (response.status !== 201) {
       throw new Error(`Erro ao criar pessoa: ${response.status}`);
     }
     return response.data;
   } catch (error: any) {
     handleApiError(error);
+    return null;
   }
 };
 
@@ -70,6 +71,7 @@ export const updatePessoa = async (id: number, data: Pessoa) => {
     return response.data;
   } catch (error: any) {
     handleApiError(error);
+    return null;
   }
 };
 
@@ -77,7 +79,7 @@ export const updatePessoa = async (id: number, data: Pessoa) => {
 export const deletePessoa = async (id: number) => {
   try {
     const response = await axios.delete(`${API_BASE_URL}/pessoa/${id}`);
-    if (response.status !== 204) { // Verifique se a deleção foi bem-sucedida
+    if (response.status !== 204) {
       throw new Error(`Erro ao deletar pessoa: ${response.status}`);
     }
   } catch (error: any) {

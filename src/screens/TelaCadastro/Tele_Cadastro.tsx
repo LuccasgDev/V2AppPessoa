@@ -6,9 +6,8 @@ import {
   TouchableOpacity, 
   Text 
 } from 'react-native';
-import { createPessoa, Pessoa2 } from '../../api/apiService';
+import { createPessoa, Pessoa } from '../../api/apiService';
 import { styles } from './Tele_CadastroStyle';
-import  {Pessoa}  from '../../api/apiService';
 
 export function TelaCadastro() {
   const [nome, setNome] = useState('');
@@ -22,7 +21,8 @@ export function TelaCadastro() {
       return;
     }
 
-    const pessoa: Pessoa2 = {
+    const pessoa: Pessoa = {
+      id: 0, // Set a default ID; assuming it will be managed by the API
       nome, 
       dataNascimento, 
       uf, 
